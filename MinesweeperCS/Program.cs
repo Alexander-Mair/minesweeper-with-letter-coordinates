@@ -96,6 +96,10 @@ namespace MinesweeperCS
                     CheckIfClear(player.X, player.Y, ref minefield);
                 }
             }
+            else if(coordinates.Length<2)
+            {
+                msg = "input must be at least two letters\n";
+            }
             else if(coordinates.Length>2)
             {
                 msg="You've typed too many characters\n";
@@ -179,11 +183,11 @@ namespace MinesweeperCS
 
             int n = 1;
             bool mine_nearby = false;
-            while (x + n < minefield.GetLength(1)
+            while (/*x + n < minefield.GetLength(1)
                 && x - n > 0
                 && y + n < minefield.GetLength(0)
                 && y - n > 0
-                && !mine_nearby)
+                &&*/ !mine_nearby)
             {
                 for (int i = y - n; i < y + n; i++)
                 {
@@ -191,14 +195,20 @@ namespace MinesweeperCS
                     {
                         if (((i >= y - n || i <= y + n) && (j == x + n || j == x - n)
                             || (j <= x + n || j >= x - n) && (i == y - n || i == y + n))
-                            && minefield[i, j] == Minefield.MINE)
+                            && j>0 && j<minefield.GetLength(0)
+                            && i>0 && i<minefield.GetLength(0))
                         {
-                            mine_nearby = true;
+                            if(minefield[i, j] == Minefield.MINE)
+                            {
+                                mine_nearby = true;
+                            }
+                            else
+                            {
+                                minefield[i, j] = Minefield.ALL_CLEAR;
+                            }
+
                         }
-                        else
-                        {
-                            minefield[i, j] = Minefield.ALL_CLEAR;
-                        }
+                        
                     }
                 }
                 n++;
