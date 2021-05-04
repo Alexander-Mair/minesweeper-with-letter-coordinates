@@ -61,8 +61,7 @@ namespace MinesweeperCS
                 }
             }
 
-            
-            //showMines(player.X, player.Y, ref minefield);
+           
             while (true)
             {
                 
@@ -217,27 +216,27 @@ namespace MinesweeperCS
 
         }
         
-        static Velocity Gravity(Velocity v)
+        static void Gravity(ref Velocity v)
         {
             v.X -= 2;
             v.Y += 2;
-            return v;
+            
         }
 
         static void LayMines(int iterations, ref Minefield [,] minefield)
         {
-            Position p = new Position(0, 20);
+            Position p = new Position(0, 0);
             Velocity v = new Velocity(-5, 2);
             
             for (int i = 0; i < iterations; i++)
             {
-                p=Inertia(p, v, ref minefield);
-                v=Gravity(v);
+                Inertia(ref p, ref v, ref minefield);
+                Gravity(ref v);
                 Seeder(ref minefield, p);
 
             }
         }
-        static Position Inertia(Position p, Velocity v, ref Minefield[,] minefield)
+        static void Inertia(ref Position p, ref Velocity v, ref Minefield[,] minefield)
         {
             if (p.X + v.X <= 0 || p.X + v.X > 27)
             {
@@ -251,7 +250,6 @@ namespace MinesweeperCS
 
             p.X += v.X;
             p.Y += v.Y;
-            return p;
         }
 
         static void Seeder(ref Minefield[,] minefield, Position p)
